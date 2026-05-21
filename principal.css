@@ -204,14 +204,20 @@ div {
 
 /* botões */
 .btn{
-    margin-top: 5px;
-    background: green;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-top: 9px;
+    background: none;
     width: 45px; height: 45px;
     border-radius: 50%; border: none;
     color: white;
+
     font-size: 22px;
     cursor: pointer;
     transition: transform 0.2s, color 0.2s;
+
 }
 
 .btn:hover{
@@ -219,7 +225,8 @@ div {
     color: rgb(57,242,248);
 }
 .pause{
-    background: green;
+    padding-top: 5px;
+    background: none;
     width: 60px; height: 60px;
     border-radius: 50%; border: none;
     color: white;
@@ -230,4 +237,8 @@ div {
 .pause:hover{
     transform: scale(1.2);
     color: rgb(57,242,248);
+}
+.btn.ativo img{
+    transform: scale(1.2);
+    filter: brightness(1.5);
 }

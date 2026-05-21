@@ -46,3 +46,24 @@ function selecionarMusica(elemento){
     elemento.classList.add("ativo");
 }
 
+
+
+
+
+
+const audio = document.getElementById("audio")
+const btnPlay = document.getElementById("play")
+const titulo = document.getElementById("titulo")
+const artista = document.getElementById("artista")
+const progresso = document.querySelector(".progresso")
+const icone = document.getElementById("iconePlay")
+
+btnPlay.addEventListener("click", () => {
+    if (audio.paused) {
+    audio.play()
+    icone.src = "icons/pausado.png"
+    } else {
+    audio.pause()
+    icone.src = "icons/tocando.png"
+    }
+})
