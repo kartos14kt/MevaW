@@ -36,7 +36,7 @@
                 
                 <div class="top-player">
                     
-                    <img src="capa.avif" class="capa">
+                    <img class="capa" draggable="false">
                     
                 </div>
                 <div class="info">
@@ -50,16 +50,20 @@
                 
                 <div class="controles">
                     <button class="btn" id="anterior">
-                        <img src="icons/skip_previous.png" class="btn_icon">
+                        <img src="icons/skip_previous.png" class="btn_icon" draggable="false">
                     </button>
 
                     <button class="pause" id="play">
-                        <img id="iconePlay" src="icons/tocando.png" class="btn_play">
+                        <img id="iconePlay" src="icons/tocando.png" class="btn_play" draggable="false">
                     </button>
 
                     <button class="btn" id="proximo">
-                        <img src="icons/skip_next.png" class="btn_icon">
+                        <img src="icons/skip_next.png" class="btn_icon" draggable="false">
                     </button>
+                </div>
+
+                <div class="barra-volume">
+                    <input type="range" value="100" min="0" max="100" class="volume">
                 </div>
                 
                 <audio id="audio"></audio>

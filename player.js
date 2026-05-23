@@ -1,3 +1,22 @@
+﻿const audio = document.getElementById("audio")
+const btnPlay = document.getElementById("play")
+const titulo = document.getElementById("titulo")
+const artista = document.getElementById("artista")
+const progresso = document.querySelector(".progresso")
+const icone = document.getElementById("iconePlay")
+const capa = document.querySelector(".capa")
+const listM = document.querySelector(".listM")
+
+
+
+
+// Previne arrastar imagens nativas do navegador
+document.addEventListener('dragstart', (e) => {
+    if (e.target && e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+});
+
 function selecionarArtista(elemento){
 
     // remove ativo dos artistas
@@ -48,26 +67,22 @@ function selecionarMusica(elemento){
 
 
 
-
-
-
-const audio = document.getElementById("audio")
-const btnPlay = document.getElementById("play")
-const titulo = document.getElementById("titulo")
-const artista = document.getElementById("artista")
-const progresso = document.querySelector(".progresso")
-const icone = document.getElementById("iconePlay")
-const listM = document.querySelector(".listM")
-
 // Mapeamento de músicas para seus arquivos
-const musicasArquivos = {
-    "Só uma noite": "audios/SoUmaNoite.mp3",
-    "Musica 2": "audios/musica2.mp3",
-    "Musica 3": "audios/musica3.mp3",
-    "Som A": "audios/somA.mp3",
-    "Som B": "audios/somB.mp3",
-    "Som C": "audios/somC.mp3"
-}
+const musicas = [
+    {
+        titulo: "Só uma noite",
+        src: "audios/SoUmaNoite.mp3",
+        capa: "icons/umanoite.avif",
+        artista: "Fabio Brazza"
+    },
+
+    {
+        titulo: "Musica 2",
+        src: "audios/oRapePreto.mp3",
+        capa: "capas/capa2.png",
+        artista: "Artista Y"
+    }
+]
 
 
 btnPlay.addEventListener("click", () => {
@@ -92,13 +107,49 @@ listM.addEventListener("click", (e) => {
         
         // Pega o nome da música e o arquivo correspondente
         const nomMusica = e.target.textContent
-        const caminhoAudio = musicasArquivos[nomMusica]
-        
+        const musica = musicas.find(m => m.titulo === nomMusica)
+        const caminhoAudio = musica.src
+
         // Toca a música
         titulo.textContent = nomMusica
-        artista.textContent = "Fabio"
+        artista.textContent = musica.artista
         audio.src = caminhoAudio
-        audio.play()
+        capa.src = musica.capa
+        capa.alt = `${nomMusica} capa`
         icone.src = "icons/pausado.png"
+
+        // Toca a música após 1 segundo
+        setTimeout(() => {
+            audio.play()
+        }, 500)
     }
+})
+
+let arrastando = false
+progresso.addEventListener("mousedown", () => {
+    arrastando = true
+    audio.pause()
+})
+progresso.addEventListener("mouseup", () => {
+    audio.play()
+    arrastando = false
+})
+
+audio.addEventListener("timeupdate", () => {
+    if(arrastando) return
+
+    audio.currentTime
+    audio.duration
+    const porcentagem = (audio.currentTime / audio.duration) * 100
+    progresso.value = porcentagem
+
+
+})
+progresso.addEventListener("input", () => {
+
+    const tempo =
+    (progresso.value / 100) * audio.duration
+
+    audio.currentTime = tempo
+
 })
