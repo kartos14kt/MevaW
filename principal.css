@@ -190,8 +190,46 @@ div {
 
 .progresso{
     width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: #444;
+    border-radius: 5px;
+    outline: none;
 }
 
+.progresso::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #444;
+    border-radius: 5px;
+}
+
+.progresso::-moz-range-track {
+    height: 6px;
+    background: #444;
+    border-radius: 5px;
+}
+
+.progresso::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    border: 2px solid #fff;
+    cursor: pointer;
+    margin-top: -4px;
+}
+
+.progresso::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    border: 2px solid #fff;
+    cursor: pointer;
+}
 /* controles */
 .controles{
     background-color: rgba(128, 0, 128, 0);
