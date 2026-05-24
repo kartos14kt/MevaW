@@ -6,10 +6,10 @@ const progresso = document.querySelector(".progresso")
 const icone = document.getElementById("iconePlay")
 const capa = document.querySelector(".capa")
 const listM = document.querySelector(".listM")
-
-
-
-
+const volume = document.querySelector(".volume")
+const iconVolume = document.querySelector(".icon-volume")
+let animando = false
+let trocado = false
 // Previne arrastar imagens nativas do navegador
 document.addEventListener('dragstart', (e) => {
     if (e.target && e.target.tagName === 'IMG') {
@@ -83,7 +83,13 @@ const musicas = [
         artista: "Artista Y"
     }
 ]
-
+const volumes = {
+    0: "icons/volume_mudo.png",
+    1: "icons/volume_baixo.png",
+    2: "icons/volume_alto.png",
+    3: "icons/audio_maximo.png",
+    4: "icons/audio_maximo_inclinado.png"
+}
 
 btnPlay.addEventListener("click", () => {
     if (audio.paused) {
@@ -153,3 +159,42 @@ progresso.addEventListener("input", () => {
     audio.currentTime = tempo
 
 })
+
+volume.addEventListener("input", () => {
+
+    audio.volume = volume.value / 100
+
+    if (audio.volume === 0) {
+
+        iconVolume.src = volumes[0]
+
+    } else if (audio.volume <= 0.5) {
+
+        iconVolume.src = volumes[1]
+
+    } else if (audio.volume > 0.5 && audio.volume <= 0.75) {
+
+        iconVolume.src = volumes[2]
+
+    }
+
+})
+
+setInterval(() => {
+
+    if (audio.volume > 0.75) {
+
+        if (trocado) {
+
+            iconVolume.src = volumes[3]
+
+        } else {
+
+            iconVolume.src = volumes[4]
+
+        }
+
+        trocado = !trocado
+    }
+
+}, 1000)
