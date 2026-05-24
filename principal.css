@@ -338,7 +338,6 @@ div {
 
 .btn:hover{
     transform: scale(1.2);
-    color: rgb(57,242,248);
 }
 .pause{
     padding-top: 5px;
