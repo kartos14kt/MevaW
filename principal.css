@@ -9,7 +9,9 @@ body {
 /* Evita arrastar imagens e seleção de texto nelas */
 img {
     -webkit-user-drag: none;
-    user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    -user-drag: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
