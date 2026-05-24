@@ -147,6 +147,7 @@ div {
         200px   /* capa grande */
         30px    /* titulo + artista */
         75px    /* barra de progresso */
+        50px    /* tempo */
         100px   /* controles */
         50px;   /* volume */
 
@@ -154,6 +155,7 @@ div {
 
     height: 100%;
 }
+
 
 /* capa */
 .capa{
@@ -197,14 +199,15 @@ div {
 
 /* barra */
 .barra{
-    padding-top: 25px; margin-right: 10;
-    background-color: rgba(255, 255, 0, 0);
-    height: 50px;
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+    height: 15px;
     grid-row: 3;
 }
 
 .progresso{
-    width: 100%;
+    width: 80%;
     -webkit-appearance: none;
     appearance: none;
     height: 14px;
@@ -240,6 +243,26 @@ div {
     margin-top: -4px;
 }
 
+.tempo{
+    display: flex;;
+    background-color: transparent;
+    height: auto;
+    display: flex;
+    justify-content: left;
+    width: 80%;
+    margin: auto;
+    grid-row: 4;
+    margin-top: -40px;
+}
+
+#tempo-atual{
+    background-color: transparent;
+}
+#duracao{
+    margin-left: 86%;
+    background-color: transparent;
+}
+
 .progresso::-moz-range-thumb {
     width: 14px;
     height: 14px;
@@ -252,11 +275,12 @@ div {
 /* barra de volume */
 .barra-volume{
     padding: 10px 10px;
-    background-color: rgba(255, 255, 0, 0);
+    background-color: transparent;
     height: 40px;
-    grid-row: 5;
+    grid-row: 6;
     display: flex;
     align-items: center;
+    margin-top: -35%;
 }
 
 .volume{
@@ -310,12 +334,12 @@ div {
 
 /* controles */
 .controles{
-    background-color: rgba(128, 0, 128, 0);
-
-    grid-row: 4;
+    background-color: transparent;
+    margin-top: -150px;
+    grid-row: 5;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 /* botões */
@@ -340,6 +364,8 @@ div {
     transform: scale(1.2);
 }
 .pause{
+    margin-right: 20%;
+    margin-left: 20%;
     padding-top: 5px;
     background: none;
     width: 60px; height: 60px;

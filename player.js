@@ -8,6 +8,9 @@ const capa = document.querySelector(".capa")
 const listM = document.querySelector(".listM")
 const volume = document.querySelector(".volume")
 const iconVolume = document.querySelector(".icon-volume")
+
+
+
 let animando = false
 let trocado = false
 // Previne arrastar imagens nativas do navegador
@@ -159,7 +162,7 @@ progresso.addEventListener("input", () => {
     audio.currentTime = tempo
 
 })
-
+// Controle de volume
 volume.addEventListener("input", () => {
 
     audio.volume = volume.value / 100
@@ -179,7 +182,7 @@ volume.addEventListener("input", () => {
     }
 
 })
-
+// Animação para volume máximo
 setInterval(() => {
 
     if (audio.volume > 0.75) {
@@ -198,3 +201,16 @@ setInterval(() => {
     }
 
 }, 1000)
+
+let estavaTocando = false
+
+progresso.addEventListener("mousedown", () => {
+    estavaTocando = !audio.paused
+})
+progresso.addEventListener("input", () => {
+    audio.currentTime = (progresso.value / 100) * audio.duration
+
+    if (estavaTocando) {
+        audio.play()
+    }
+})

@@ -47,6 +47,9 @@
                 <div class="barra">
                     <input type="range" value="0" min="0" max="100" class="progresso">
                 </div>
+                <div class="tempo">
+                    <span id="tempo-atual">0:00</span> <span id="duracao">0:00</span>
+                </div>
                 
                 <div class="controles">
                     <button class="btn" id="anterior">
@@ -63,7 +66,7 @@
                 </div>
 
                 <div class="barra-volume">
-                    <input type="range" value="100" min="0" max="100" class="volume"><img class="icon-volume" src="icons/edit_audio.png" draggable="false">
+                    <input type="range" value="100" min="0" max="100" class="volume"><img class="icon-volume" src="" draggable="false">
                 </div>
                 
                 <audio id="audio"></audio>
