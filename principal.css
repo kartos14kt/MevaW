@@ -32,19 +32,20 @@ img {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    background-color: transparent;
 }
 
 /* artistas */
 .artistas {
-    background-color: #222;
+    background-color: #22222250;
     padding: 5px;
-    height: 300px;
+    height: 30%;
     overflow-y: auto;
 }
 
 /* player / extra */
 .extra {
-    background-color: #222;
+    background-color: #22222250;
     height: 562px;
     padding: 10px;
 }
@@ -52,11 +53,11 @@ img {
 /* coluna direita */
 .sobre {
     width: 68%;
+    height: 96%;
     margin: 40px 5px 0 15px;
-    padding: 10px 10px 10px 10px;
-    height: 90%;
-    background-color: #222;
+    background-color: transparent;
     overflow-y: auto;
+    gap: 30px;
 }
 
 /* conteúdo dentro da sobre */
@@ -64,15 +65,16 @@ img {
     height: 30%;
     padding: 5px;
     overflow-y: auto;
-    background-color: #1d1d1d;
+    background-color: #22222250;
 }
 
 .letras {
-    height: 65%;
-    margin-top: 10px;
+    height: 59%;
+    margin-top: 30px;
     padding: 5px;
     overflow-y: auto;
-    background-color: #1d1d1d;
+    background-color: #22222250;
+    gap: 10px;
 }
 
 /* estilo padrão das divs */

@@ -136,22 +136,27 @@ listM.addEventListener("click", (e) => {
 
 let arrastando = false
 progresso.addEventListener("mousedown", () => {
+    estavaTocando = !audio.paused
     arrastando = true
     audio.pause()
 })
 progresso.addEventListener("mouseup", () => {
+    if (estavaTocando) {
+        audio.play()
+    }
+    
     audio.play()
     arrastando = false
 })
 
 audio.addEventListener("timeupdate", () => {
+
     if(arrastando) return
 
-    audio.currentTime
-    audio.duration
-    const porcentagem = (audio.currentTime / audio.duration) * 100
-    progresso.value = porcentagem
+    const porcentagem =
+    (audio.currentTime / audio.duration) * 100
 
+    progresso.value = porcentagem
 
 })
 progresso.addEventListener("input", () => {
@@ -205,12 +210,22 @@ setInterval(() => {
 let estavaTocando = false
 
 progresso.addEventListener("mousedown", () => {
+
     estavaTocando = !audio.paused
+
+    arrastando = true
+
+    audio.pause()
+
 })
-progresso.addEventListener("input", () => {
-    audio.currentTime = (progresso.value / 100) * audio.duration
+progresso.addEventListener("mouseup", () => {
 
     if (estavaTocando) {
+
         audio.play()
+
     }
+
+    arrastando = false
+
 })
