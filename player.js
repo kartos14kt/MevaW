@@ -82,8 +82,8 @@ const musicas = [
     {
         titulo: "Musica 2",
         src: "audios/oRapePreto.mp3",
-        capa: "capas/capa2.png",
-        artista: "Artista Y"
+        capa: "icons/RapPreto.avif",
+        artista: "Fabio Brazza"
     }
 ]
 const volumes = {
@@ -126,7 +126,7 @@ listM.addEventListener("click", (e) => {
         capa.src = musica.capa
         capa.alt = `${nomMusica} capa`
         icone.src = "icons/pausado.png"
-
+        
         // Toca a música após 1 segundo
         setTimeout(() => {
             audio.play()
@@ -135,17 +135,23 @@ listM.addEventListener("click", (e) => {
 })
 
 let arrastando = false
+let estavaTocando = false
 progresso.addEventListener("mousedown", () => {
     estavaTocando = !audio.paused
     arrastando = true
     audio.pause()
+    
 })
 progresso.addEventListener("mouseup", () => {
     if (estavaTocando) {
         audio.play()
     }
+    if (estavaTocando) {
+
+        audio.play()
+
+    }
     
-    audio.play()
     arrastando = false
 })
 
@@ -167,7 +173,7 @@ progresso.addEventListener("input", () => {
     audio.currentTime = tempo
 
 })
-// Controle de volume
+// Controle de volume ----------------------
 volume.addEventListener("input", () => {
 
     audio.volume = volume.value / 100
@@ -187,7 +193,7 @@ volume.addEventListener("input", () => {
     }
 
 })
-// Animação para volume máximo
+// Animação para volume máximo ----------------------
 setInterval(() => {
 
     if (audio.volume > 0.75) {
@@ -207,25 +213,22 @@ setInterval(() => {
 
 }, 1000)
 
-let estavaTocando = false
 
-progresso.addEventListener("mousedown", () => {
 
-    estavaTocando = !audio.paused
-
-    arrastando = true
-
-    audio.pause()
-
+// tempo corrente --------------------------
+const tempo_atual = document.getElementById("tempo-atual")
+const duracao = document.getElementById("duracao")
+audio.addEventListener("timeupdate", () => {
+    const minutos = Math.floor(audio.currentTime / 60)
+    const segundos = Math.floor(audio.currentTime % 60)
+    .toString()
+    .padStart(2, "0")
+    tempo_atual.textContent = `${minutos}:${segundos}`
 })
-progresso.addEventListener("mouseup", () => {
-
-    if (estavaTocando) {
-
-        audio.play()
-
-    }
-
-    arrastando = false
-
+audio.addEventListener("loadedmetadata", () => {
+    const minutos = Math.floor(audio.duration / 60)
+    const segundos = Math.floor(audio.duration % 60)
+    .toString()
+    .padStart(2, "0")
+    duracao.textContent = `${minutos}:${segundos}`
 })
