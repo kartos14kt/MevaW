@@ -31,28 +31,13 @@ function selecionarArtista(elemento){
 
     // identifica qual artista foi clicado
     const artista = elemento.dataset.artista;
-
-    // banco de músicas
-    const musicas = {
-        fabio: [
-            "Só uma noite",
-            "Musica 2",
-            "Musica 3"
-        ],
-        joao: [
-            "Som A",
-            "Som B",
-            "Som C"
-        ]
-    };
-
     const sobre = document.querySelector(".listM");
 
     let html = "";
 
     // cria as divs das músicas
     musicas[artista].forEach(musica => {
-        html += `<div class="musica">${musica}</div>`;
+        html += `<div class="musica">${musica.titulo}</div>`;
     });
 
     sobre.innerHTML = html;
@@ -62,8 +47,8 @@ function selecionarArtista(elemento){
 // selecionar música
 function selecionarMusica(elemento){
 
-    const musicas = document.querySelectorAll(".musica");
-    musicas.forEach(m => m.classList.remove("ativo"));
+    const musicasElementos = document.querySelectorAll(".musica");
+    musicasElementos.forEach(m => m.classList.remove("ativo"));
 
     elemento.classList.add("ativo");
 }
@@ -71,21 +56,46 @@ function selecionarMusica(elemento){
 
 
 // Mapeamento de músicas para seus arquivos
-const musicas = [
-    {
-        titulo: "Só uma noite",
-        src: "audios/SoUmaNoite.mp3",
-        capa: "icons/umanoite.avif",
-        artista: "Fabio Brazza"
-    },
+const musicas = {
+    fabio: [
+        {
+            titulo: "Só uma noite",
+            src: "audios/SoUmaNoite.mp3",
+            capa: "icons/umanoite.avif",
+            artista: "Fabio Brazza",
+            letra: "letras/SoUmaNoite"
+        },
+        {
+            titulo: "Musica 2",
+            src: "audios/oRapePreto.mp3",
+            capa: "icons/RapPreto.avif",
+            artista: "Fabio Brazza",
+            letra: "letras/oRapePreto"
+        }
+    ],
+    joao: [
+        {
+            titulo: "Som A",
+            src: "audios/SomA.mp3",
+            capa: "icons/umanoite.avif",
+            artista: "João Silva"
+        },
+        {
+            titulo: "Som B",
+            src: "audios/SomB.mp3",
+            capa: "icons/RapPreto.avif",
+            artista: "João Silva"
+        },
+        {
+            titulo: "Som C",
+            src: "audios/SomC.mp3",
+            capa: "icons/RapPreto.avif",
+            artista: "João Silva"
+        }
+    ]
+    
+};
 
-    {
-        titulo: "Musica 2",
-        src: "audios/oRapePreto.mp3",
-        capa: "icons/RapPreto.avif",
-        artista: "Fabio Brazza"
-    }
-]
 const volumes = {
     0: "icons/volume_mudo.png",
     1: "icons/volume_baixo.png",
@@ -116,7 +126,7 @@ listM.addEventListener("click", (e) => {
         
         // Pega o nome da música e o arquivo correspondente
         const nomMusica = e.target.textContent
-        const musica = musicas.find(m => m.titulo === nomMusica)
+        const musica = Object.values(musicas).flat().find(m => m.titulo === nomMusica)
         const caminhoAudio = musica.src
 
         // Toca a música
@@ -127,6 +137,10 @@ listM.addEventListener("click", (e) => {
         capa.alt = `${nomMusica} capa`
         icone.src = "icons/pausado.png"
         
+        if (musica.letra) {
+            carregarLetra(musica.letra)
+        }
+
         // Toca a música após 1 segundo
         setTimeout(() => {
             audio.play()
@@ -232,3 +246,14 @@ audio.addEventListener("loadedmetadata", () => {
     .padStart(2, "0")
     duracao.textContent = `${minutos}:${segundos}`
 })
+
+
+function carregarLetra(caminho) {
+
+    fetch(caminho)
+        .then(response => response.text())
+        .then(texto => {
+            document.getElementById("letra").textContent = texto
+        })
+
+}

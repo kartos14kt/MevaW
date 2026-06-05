@@ -3,48 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reproduzir farmatação de div</title>
+    <title>Reproduzir formatação de div</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0c19339c;
+        }
+
+        .conteudo {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        #letra {
+            white-space: pre-line;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
 </head>
-<style>
-    body {
-        margin: 0;
-    }
-    .topo {
-        background-color: lightblue;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .menu {
-        background-color: lightgray;
-        padding: 15px;
-        text-align: left;
-    }
-
-    .conteudo {
-        background-color: white;
-        padding: 20px;
-        text-align: justify;
-    }
-</style>
 <body>
-    <div class="topo">
-        <h1>topo</h1>
-        <p>aqui é o topo
-        </p>
-        <p>a</p>
-        <p>a</p>       
-    </div>
+    <main class="conteudo">
+        <div id="letra">Carregando...</div>
+    </main>
 
-    <div class ="menu">
-        <h2>menu</h2>
-    </div>
-
-    <div class="conteudo">
-        <h2>conteúdo</h2>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptas enim modi beatae voluptate accusantium, repellendus reprehenderit nesciunt quia sed sint animi quibusdam eligendi pariatur facere voluptatibus quasi culpa commodi?
-
-
-
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("letras/letra1.txt")
+                .then(response => response.text())
+                .then(texto => {
+                    document.getElementById("letra").textContent = texto
+                })
+            });
+    </script>
 </body>
 </html>

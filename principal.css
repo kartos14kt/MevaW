@@ -6,6 +6,12 @@ body {
     color: white;
 }
 
+#letra {
+            white-space: pre-line;
+            line-height: 1.6;
+            color: #ffffff;
+        }
+
 /* Evita arrastar imagens e seleção de texto nelas */
 img {
     -webkit-user-drag: none;
@@ -71,7 +77,7 @@ img {
 .letras {
     height: 59%;
     margin-top: 30px;
-    padding: 5px;
+    padding: 1%;
     overflow-y: auto;
     background-color: #22222250;
     gap: 10px;
@@ -117,23 +123,27 @@ div {
 
 /* scrollbar */
 .artistas::-webkit-scrollbar,
-.sobre::-webkit-scrollbar {
+.sobre::-webkit-scrollbar,
+.letras::-webkit-scrollbar {
     width: 10px;
 }
 
 .artistas::-webkit-scrollbar-track,
-.sobre::-webkit-scrollbar-track {
+.sobre::-webkit-scrollbar-track,
+.letras::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .artistas::-webkit-scrollbar-thumb,
-.sobre::-webkit-scrollbar-thumb {
+.sobre::-webkit-scrollbar-thumb,
+.letras::-webkit-scrollbar-thumb {
     background: #5a5a5a;
     border-radius: 5px;
 }
 
 .artistas::-webkit-scrollbar-thumb:hover,
-.sobre::-webkit-scrollbar-thumb:hover {
+.sobre::-webkit-scrollbar-thumb:hover,
+.letras::-webkit-scrollbar-thumb:hover {
     background: #8a8a8a;
 }
 
