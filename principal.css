@@ -208,8 +208,6 @@ div {
 .artista{
     color: #aaa;
 }
-
-/* barra */
 .barra{
     display: flex;
     justify-content: center;
