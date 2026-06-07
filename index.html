@@ -3,48 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Este é um site de exemplo">
+    <meta name="description" content="Este é um site de musicas, onde você pode ouvir suas músicas favoritas e ler as letras.">
     <meta name="keywords" content="cantores, musicas">
     <meta name="author" content="Murilo Cézar">
-    <title>Meu sitezão</title>
+    <title>Wave music - web player</title>
+    <link rel="icon" href="icons/LOGOsite.png" type="image/png">
 
     <link rel="stylesheet" href="principal.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
 </head>
 <body>
 
-<div class="layout">
-<!-- artistas-->
-    <div class="coluna-esquerda">
 
+<!-- TOPO: Logo, título e barra de pesquisa -->
+
+<div class="topo">
+    <div class="logo-topo">
+        <img src="icons/LOGOsite.png" class="logo-img" alt="Wave Music">
+        <span class="logo-nome">Wave <span class="logo-wave">Music</span></span>
+    </div>
+
+    <div class="barra-pesquisa">
+        <span class="pesquisa-icone">🔍</span>
+        <input type="text" class="pesquisa-input" placeholder="Pesquisar...">
+    </div>
+
+    <div></div>
+</div>
+
+
+<!-- LAYOUT PRINCIPAL: Coluna esquerda (player) + Coluna direita (músicas) -->
+
+<div class="layout">
+
+    <div class="coluna-esquerda">
+        
+        <!-- Lista de artistas -->
         <div class="artistas">
             <h1 align="center">Artistas</h1>
         </div>
 
+        <!-- Player de música -->
         <div class="extra">
-            
-            
-            <!-- player de música -->
             <div class="player">
                 
+                <!-- Capa da música -->
                 <div class="top-player">
-                    
                     <img class="capa" draggable="false">
-                    
                 </div>
+                
+                <!-- Título e artista -->
                 <div class="info">
                     <div class="titulo" id="titulo">Nenhuma música</div>
                     <div class="artista" id="artista">aaaaaaa</div>
                 </div>
-                
+
+                <!-- Barra de progresso da música -->
                 <div class="barra">
                     <input type="range" value="0" min="0" max="100" class="progresso">
                 </div>
+                
+                <!-- Tempo atual e duração -->
                 <div class="tempo">
                     <span id="tempo-atual">0:00</span> <span id="duracao">0:00</span>
                 </div>
-                
+
+                <!-- Botões de controle (anterior, play, próximo) -->
                 <div class="controles">
+                    <button class="btn-extra" id="btnLoop">
+                        <img id="iconeLoop" src="icons/repetirOFF.png" draggable="false">
+                    </button>
+
                     <button class="btn" id="anterior">
                         <img src="icons/skip_previous.png" class="btn_icon" draggable="false">
                     </button>
@@ -56,33 +85,59 @@
                     <button class="btn" id="proximo">
                         <img src="icons/skip_next.png" class="btn_icon" draggable="false">
                     </button>
+
+                    <button class="btn-extra" id="btnCurtir">
+                        <img id="iconeCurtir" src="icons/semCurtir.png" draggable="false">
+                    </button>
                 </div>
 
-                <div class="barra-volume">
-                    <input type="range" value="100" min="0" max="100" class="volume"><img class="icon-volume" src="" draggable="false">
+                <!-- Botões extras (add playlist) -->
+                <div class="extras">
+                    <button class="btn-extra" id="btnPlaylist">
+                        <img src="icons/playlistADD.png" draggable="false">
+                    </button>
                 </div>
-                
+
+                <!-- Barra de volume -->
+                <div class="barra-volume">
+                    <input type="range" value="100" min="0" max="100" class="volume">
+                    <img class="icon-volume" src="" draggable="false">
+                </div>
+
+                <!-- Elemento de áudio (não visível) -->
                 <audio id="audio"></audio>
             </div>
         </div>
-
     </div>
 
-
-
-<!-- musicas e letras-->
+   
+    <!-- COLUNA DIREITA: Abas + Lista de músicas -->
     <div class="sobre">
-
-        <div class="listM">
-            aqui fica as musicas
+        <div class="abas-nav">
+            <button class="aba-btn ativo" id="aba-playlists" onclick="trocarAba('playlists')">Playlists</button>
+            <button class="aba-btn" id="aba-musicas" onclick="trocarAba('musicas')">Músicas</button>
         </div>
 
-        <div class="letras" id="letra">
-            carregando letra...
+        <!-- Conteúdo principal: Lista de músicas do artista selecionado -->
+        <div class="conteudo-principal">
+
+            <!-- painel músicas -->
+            <div id="painel-musicas" class="painel-aba">
+                <div id="listM" class="listM"></div>
+            </div>
+
+            <!-- painel playlists -->
+            <div id="painel-playlists" class="painel-aba" style="display:none;">
+                <p style="color: #aaa; padding: 20px;">Nenhuma playlist criada ainda.</p>
+            </div>
+
         </div>
     </div>
-
 </div>
-    <script src="player.js"></script>
+
+<!-- Elemento oculto para carregarLetra() -->
+<div id="letra" style="display:none;"></div>
+
+<script src="player.js"></script>
 </body>
 </html>

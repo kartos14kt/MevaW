@@ -8,6 +8,10 @@ const capa = document.querySelector(".capa")
 const listM = document.querySelector(".listM")
 const volume = document.querySelector(".volume")
 const iconVolume = document.querySelector(".icon-volume")
+const btnCurtir = document.getElementById("btnCurtir")
+const iconeCurtir = document.getElementById("iconeCurtir")
+const btnLoop = document.getElementById("btnLoop")
+const iconeLoop = document.getElementById("iconeLoop")
 
 let musicas = {}       // { "Artista": [ {titulo, src, capa, artista} ] }
 let trocado = false
@@ -15,6 +19,16 @@ let arrastando = false
 let estavaTocando = false
 let fila = []
 let indiceFila = 0
+let modoLoop = 0       // 0 = off | 1 = repetir playlist | 2 = repetir uma
+let curtido = false
+
+function trocarAba(aba) {
+    document.querySelectorAll(".aba-btn").forEach(b => b.classList.remove("ativo"))
+    document.getElementById(`aba-${aba}`).classList.add("ativo")
+
+    document.querySelectorAll(".painel-aba").forEach(p => p.style.display = "none")
+    document.getElementById(`painel-${aba}`).style.display = "block"
+}
 
 const volumes = {
     0: "icons/volume_mudo.png",
@@ -44,8 +58,8 @@ function lerMetadados(arquivo) {
                 jsmediatags.read(new Blob([buffer]), {
                     onSuccess(tag) {
                         const t = tag.tags
-                        const artista = t.artist || "Desconhecido"
-                        const titulo = t.title || arquivo.replace(".mp3", "")
+                        const artista = (t.artist || "Desconhecido").trim()
+                        const titulo = (t.title || arquivo.replace(".mp3", "")).trim()
 
                         let capaUrl = "Capas_music/RapPreto.avif"
                         if (t.picture) {
@@ -63,7 +77,7 @@ function lerMetadados(arquivo) {
                         console.warn(`Erro ao ler metadados de ${arquivo}:`, err)
                         const titulo = arquivo.replace(".mp3", "")
                         if (!musicas["Desconhecido"]) musicas["Desconhecido"] = []
-                        musicas["Desconhecido"].push({ titulo, artista: "Desconhecido", src: `audios/${arquivo}`, capa: "capas/default.avif" })
+                        musicas["Desconhecido"].push({ titulo, artista: "Desconhecido", src: `audios/${arquivo}`, capa: "capa.avif" })
                         resolve()
                     }
                 })
@@ -92,6 +106,8 @@ function carregarArtistas() {
 }
 
 function selecionarArtista(elemento) {
+    trocarAba("musicas")
+    
     document.querySelectorAll(".nomes").forEach(a => a.classList.remove("ativo"))
     elemento.classList.add("ativo")
 
@@ -152,9 +168,11 @@ btnPlay.addEventListener("click", () => {
     if (audio.paused) {
         audio.play()
         icone.src = "icons/pausado.png"
+        btnPlay.classList.add("ativo")
     } else {
         audio.pause()
         icone.src = "icons/tocando.png"
+        btnPlay.classList.remove("ativo")
     }
 })
 
@@ -181,8 +199,12 @@ progresso.addEventListener("mouseup", () => {
     arrastando = false
 })
 audio.addEventListener("timeupdate", () => {
-    if (arrastando) return
-    progresso.value = (audio.currentTime / audio.duration) * 100
+    if (!arrastando) {
+        progresso.value = (audio.currentTime / audio.duration) * 100
+    }
+    const m = Math.floor(audio.currentTime / 60)
+    const s = Math.floor(audio.currentTime % 60).toString().padStart(2, "0")
+    tempo_atual.textContent = `${m}:${s}`
 })
 progresso.addEventListener("input", () => {
     audio.currentTime = (progresso.value / 100) * audio.duration
@@ -192,15 +214,31 @@ progresso.addEventListener("input", () => {
 const tempo_atual = document.getElementById("tempo-atual")
 const duracao = document.getElementById("duracao")
 
-audio.addEventListener("timeupdate", () => {
-    const m = Math.floor(audio.currentTime / 60)
-    const s = Math.floor(audio.currentTime % 60).toString().padStart(2, "0")
-    tempo_atual.textContent = `${m}:${s}`
-})
 audio.addEventListener("loadedmetadata", () => {
     const m = Math.floor(audio.duration / 60)
     const s = Math.floor(audio.duration % 60).toString().padStart(2, "0")
     duracao.textContent = `${m}:${s}`
+})
+
+// ─── FIM DA MÚSICA ─────────────────────────────────────────
+audio.addEventListener("ended", () => {
+    if (modoLoop === 2) {
+        // repetir a música atual
+        audio.currentTime = 0
+        audio.play()
+    } else if (modoLoop === 1) {
+        // repetir playlist
+        indiceFila = (indiceFila + 1) % fila.length
+        tocarMusica(fila[indiceFila])
+    } else {
+        // sem loop, avança se não for a última
+        if (indiceFila < fila.length - 1) {
+            indiceFila++
+            tocarMusica(fila[indiceFila])
+        } else {
+            icone.src = "icons/tocando.png"
+        }
+    }
 })
 
 // ─── VOLUME ────────────────────────────────────────────────
@@ -216,3 +254,17 @@ setInterval(() => {
         trocado = !trocado
     }
 }, 1000)
+
+// ─── CURTIR ────────────────────────────────────────────────
+btnCurtir.addEventListener("click", () => {
+    curtido = !curtido
+    iconeCurtir.src = curtido ? "icons/comCurtir.png" : "icons/semCurtir.png"
+})
+
+// ─── LOOP ──────────────────────────────────────────────────
+btnLoop.addEventListener("click", () => {
+    modoLoop = (modoLoop + 1) % 3
+    if (modoLoop === 0) iconeLoop.src = "icons/repetirOFF.png"
+    if (modoLoop === 1) iconeLoop.src = "icons/repetirON.png"
+    if (modoLoop === 2) iconeLoop.src = "icons/repetirONE.png"
+})

@@ -6,12 +6,6 @@ body {
     color: white;
 }
 
-#letra {
-            white-space: pre-line;
-            line-height: 1.6;
-            color: #ffffff;
-        }
-
 /* Evita arrastar imagens e seleção de texto nelas */
 img {
     -webkit-user-drag: none;
@@ -45,8 +39,18 @@ img {
 .artistas {
     background-color: #22222250;
     padding: 5px;
-    height: 30%;
+    height: 33%;
     overflow-y: auto;
+    border: 1px solid #383838;
+}
+
+.artistas h1 {
+    position: sticky;
+    top: 0;
+    margin: 0 0 10px;
+    padding: 8px 0 5px;
+    background-color: #22222250;
+    z-index: 1;
 }
 
 /* player / extra */
@@ -54,16 +58,7 @@ img {
     background-color: #22222250;
     height: 562px;
     padding: 10px;
-}
-
-/* coluna direita */
-.sobre {
-    width: 68%;
-    height: 96%;
-    margin: 40px 5px 0 15px;
-    background-color: transparent;
-    overflow-y: auto;
-    gap: 30px;
+    border: 1px solid #383838;
 }
 
 /* conteúdo dentro da sobre */
@@ -72,15 +67,6 @@ img {
     padding: 5px;
     overflow-y: auto;
     background-color: #22222250;
-}
-
-.letras {
-    height: 59%;
-    margin-top: 30px;
-    padding: 1%;
-    overflow-y: auto;
-    background-color: #22222250;
-    gap: 10px;
 }
 
 /* estilo padrão das divs */
@@ -124,47 +110,51 @@ div {
 /* scrollbar */
 .artistas::-webkit-scrollbar,
 .sobre::-webkit-scrollbar,
-.letras::-webkit-scrollbar {
+.letras::-webkit-scrollbar,
+.conteudo-principal::-webkit-scrollbar {
     width: 10px;
 }
 
 .artistas::-webkit-scrollbar-track,
 .sobre::-webkit-scrollbar-track,
-.letras::-webkit-scrollbar-track {
+.letras::-webkit-scrollbar-track,
+.conteudo-principal::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .artistas::-webkit-scrollbar-thumb,
 .sobre::-webkit-scrollbar-thumb,
-.letras::-webkit-scrollbar-thumb {
-    background: #5a5a5a;
+.letras::-webkit-scrollbar-thumb,
+.conteudo-principal::-webkit-scrollbar-thumb {
+    background: rgb(57,242,248);
     border-radius: 5px;
 }
 
 .artistas::-webkit-scrollbar-thumb:hover,
 .sobre::-webkit-scrollbar-thumb:hover,
-.letras::-webkit-scrollbar-thumb:hover {
-    background: #8a8a8a;
+.letras::-webkit-scrollbar-thumb:hover,
+.conteudo-principal::-webkit-scrollbar-thumb:hover {
+    background: rgb(57,242,248);
 }
 
 
 
 .player{
-    background-color: none;
+    background-color: transparent;
     display: grid;
     align-items: center;
     grid-template-columns: 1fr;
 
     grid-template-rows:
-        200px   /* capa grande */
-        30px    /* titulo + artista */
-        75px    /* barra de progresso */
-        50px    /* tempo */
-        100px   /* controles */
-        50px;   /* volume */
+        200px   /* capa */
+        40px    /* titulo + artista */
+        10px    /* barra de progresso */
+        5px    /* tempo */
+        90px    /* controles */
+        50px    /* extras */
+        40px;   /* volume */
 
     gap: 10px;
-
     height: 100%;
 }
 
@@ -249,20 +239,18 @@ div {
 
     border: 2px solid #fff;
     cursor: pointer;
-
     margin-top: -4px;
 }
 
 .tempo{
-    display: flex;;
+    display: flex;
     background-color: transparent;
     height: auto;
-    display: flex;
     justify-content: left;
     width: 80%;
     margin: auto;
+    margin-top: -5px;
     grid-row: 4;
-    margin-top: -40px;
 }
 
 #tempo-atual{
@@ -284,25 +272,39 @@ div {
 
 /* barra de volume */
 .barra-volume{
+    position: relative;
+    width: 40%;
+    margin: 0 auto;
     padding: 10px 10px;
     background-color: transparent;
     height: 40px;
     grid-row: 6;
     display: flex;
     align-items: center;
-    margin-top: -35%;
+    justify-content: center;
 }
 
 .volume{
-    margin-left: 40%;
-    width: 20%;
+    width: 100%;
     height: 14px;
+    padding-right: 26px;
+    padding-left: 10px;
 
     -webkit-appearance: none;
     appearance: none;
 
     background: transparent;
     outline: none;
+}
+
+.icon-volume {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
 }
 
 .volume::-webkit-slider-runnable-track {
@@ -329,7 +331,6 @@ div {
 
     border: 2px solid #fff;
     cursor: pointer;
-
     margin-top: -4px;
 }
 
@@ -345,13 +346,12 @@ div {
 /* controles */
 .controles{
     background-color: transparent;
-    margin-top: -150px;
     grid-row: 5;
 
     display: flex;
     justify-content: center;
+    gap: 50px;
 }
-
 /* botões */
 .btn{
     display: flex;
@@ -373,11 +373,13 @@ div {
 .btn:hover{
     transform: scale(1.2);
 }
+
+
 .pause{
-    margin-right: 20%;
-    margin-left: 20%;
+    margin-right: 8%;
+    margin-left: 8%;
     padding-top: 5px;
-    background: none;
+    background: rgb(255, 255, 255);
     width: 60px; height: 60px;
     border-radius: 50%; border: none;
     color: white;
@@ -389,7 +391,179 @@ div {
     transform: scale(1.2);
     color: rgb(57,242,248);
 }
+
+.pause.ativo {
+    background: rgb(57, 242, 248) !important;
+}
+
 .btn.ativo img{
     transform: scale(1.2);
     filter: brightness(1.5);
+}
+
+/* extras */
+.extras {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    background: transparent;
+    grid-row: 7;
+}
+
+.btn-extra {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-extra:hover {
+    transform: scale(1.2);
+}
+
+/* ─── TOPO ─────────────────────────────────────────────────── */
+.topo {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #0a0a0a;
+    border-bottom: 1px solid #222;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 32px;
+    height: 32px;
+}
+
+.logo-nome {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.logo-wave {
+    color: rgb(57, 242, 248);
+}
+
+.barra-pesquisa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 25px;
+    padding: 8px 18px;
+    transition: border-color 0.3s ease;
+}
+
+.barra-pesquisa:focus-within {
+    border-color: rgb(57, 242, 248);
+}
+
+.pesquisa-icone {
+    font-size: 15px;
+    color: #aaa;
+    flex-shrink: 0;
+}
+
+.pesquisa-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.pesquisa-input::placeholder {
+    color: #666;
+}
+
+/* ─── LAYOUT COM TOPO ──────────────────────────────────────── */
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.layout {
+    height: calc(100vh - 57px);
+}
+
+/* ─── ABAS DA COLUNA DIREITA ───────────────────────────────── */
+.abas-nav {
+    display: flex;
+    gap: 4px;
+    padding: 0 0 12px 0;
+    border-bottom: 1px solid #222;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.aba-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+    position: relative;
+}
+
+.aba-btn:hover {
+    color: white;
+    background-color: #1a1a1a;
+}
+
+.aba-btn.ativo {
+    color: rgb(57, 242, 248);
+    font-weight: bold;
+}
+
+.aba-btn.ativo::after {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgb(57, 242, 248);
+    border-radius: 2px;
+}
+
+/* ─── ÁREA DE CONTEÚDO ─────────────────────────────────────── */
+.conteudo-principal {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* ajuste da coluna direita */
+.sobre {
+    width: 68%;
+    height: 95%;
+    margin: 40px 5px 0 15px;
+    padding: 10px;
+    border: 1px solid #383838;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.painel-aba {
+    height: 100%;
 }
