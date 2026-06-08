@@ -137,7 +137,6 @@ function tocarMusica(musica) {
     artistaEl.textContent = musica.artista
     audio.src = musica.src
     capa.src = musica.capa
-    icone.src = "icons/pausado.png"
 
     const nomeArquivo = musica.src.split("/").pop().replace(".mp3", "")
     carregarLetra(`letras/${nomeArquivo}.txt`)
@@ -164,15 +163,21 @@ function carregarLetra(caminho) {
 }
 
 // ─── PLAY / PAUSE ──────────────────────────────────────────
+audio.addEventListener("play", () => {
+    icone.src = "icons/pausado.png"
+    btnPlay.classList.add("ativo")
+})
+
+audio.addEventListener("pause", () => {
+    icone.src = "icons/tocando.png"
+    btnPlay.classList.remove("ativo")
+})
+
 btnPlay.addEventListener("click", () => {
     if (audio.paused) {
         audio.play()
-        icone.src = "icons/pausado.png"
-        btnPlay.classList.add("ativo")
     } else {
         audio.pause()
-        icone.src = "icons/tocando.png"
-        btnPlay.classList.remove("ativo")
     }
 })
 
@@ -237,6 +242,7 @@ audio.addEventListener("ended", () => {
             tocarMusica(fila[indiceFila])
         } else {
             icone.src = "icons/tocando.png"
+            btnPlay.classList.remove("ativo")
         }
     }
 })
