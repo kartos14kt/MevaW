@@ -28,6 +28,8 @@ function trocarAba(aba) {
 
     document.querySelectorAll(".painel-aba").forEach(p => p.style.display = "none")
     document.getElementById(`painel-${aba}`).style.display = "block"
+
+    if (aba === "playlists") renderAbaPlaylists()
 }
 
 const volumes = {
@@ -184,6 +186,9 @@ listM.addEventListener("click", (e) => {
 })
 
 function tocarMusica(musica) {
+    const musicaAtualizada = Object.values(musicas).flat().find(m => m.src === musica.src)
+    if (musicaAtualizada) musica = musicaAtualizada
+
     tituloEl.textContent = musica.titulo
     artistaEl.textContent = musica.artista
     audio.src = musica.src
@@ -440,7 +445,17 @@ document.getElementById("inputApelido").addEventListener("keydown", (e) => {
 // abre o modal ao clicar no btnPlaylist
 document.getElementById("btnPlaylist").addEventListener("click", () => {
     if (!fila[indiceFila]) return
-    document.getElementById("modalTituloMusica").textContent = fila[indiceFila].titulo
+    const musica = fila[indiceFila]
+    document.getElementById("modalTituloMusica").textContent = musica.titulo
+
+    const capaMini = document.querySelector(".modal-capa-mini")
+    capaMini.innerHTML = ""
+    const img = document.createElement("img")
+    img.src = musica.capa
+    img.style.cssText = "width:100%; height:100%; object-fit:cover; border-radius:8px;"
+    img.onerror = () => capaMini.innerHTML = '<i class="ti ti-music"></i>'
+    capaMini.appendChild(img)
+
     atualizarListaPlaylists()
     document.getElementById("modalPlaylist").style.display = "flex"
 })
@@ -472,6 +487,7 @@ function criarPlaylist() {
     setTimeout(() => input.placeholder = "Nova playlist...", 2000)
 
     atualizarListaPlaylists()
+    renderAbaPlaylists()
 }
 
 function atualizarListaPlaylists() {
@@ -511,9 +527,157 @@ function adicionarNaPlaylist(index) {
     playlists[index].musicas.push(musica)
     savePlaylists(playlists)
     atualizarListaPlaylists()
+    renderAbaPlaylists()
 }
 document.getElementById("modalPlaylist").addEventListener("click", (e) => {
     if (e.target === document.getElementById("modalPlaylist")) {
         fecharModalPlaylist()
     }
 })
+
+function renderAbaPlaylists() {
+    const painel = document.getElementById("painel-playlists")
+    const playlists = getPlaylists()
+
+    painel.innerHTML = ""
+
+    if (playlists.length === 0) {
+        painel.innerHTML = `<p style="color:#555; padding: 20px; font-size:14px;">Nenhuma playlist criada ainda.</p>`
+        return
+    }
+
+    playlists.forEach((pl, i) => {
+        const div = document.createElement("div")
+        div.className = "playlist-aba-item"
+
+        const numero = document.createElement("div")
+        numero.className = "coluna-musica numero-musica"
+        numero.textContent = String(i + 1).padStart(2, "0")
+
+        const nome = document.createElement("div")
+        nome.className = "coluna-musica titulo-musica"
+        nome.textContent = pl.nome
+
+        const count = document.createElement("div")
+        count.className = "coluna-musica album-musica"
+        count.textContent = `${pl.musicas.length} músicas`
+
+        const editar = document.createElement("div")
+        editar.className = "coluna-musica acao-letra"
+        const btnEditar = document.createElement("img")
+        btnEditar.src = "icons/edit_playlist.svg"
+        btnEditar.style.cssText = "width:20px; height:20px; cursor:pointer; opacity:0.6; transition: opacity 0.2s;"
+        btnEditar.onmouseover = () => btnEditar.style.opacity = "1"
+        btnEditar.onmouseout = () => btnEditar.style.opacity = "0.6"
+        btnEditar.onclick = (e) => {
+            e.stopPropagation()
+            abrirModalEditar(i)
+        }
+        editar.appendChild(btnEditar)
+
+        div.append(numero, nome, count, editar)
+        div.onclick = () => abrirPlaylist(i)
+        painel.appendChild(div)
+    })
+}
+
+function abrirModalEditar(index) {
+    const playlists = getPlaylists()
+    const pl = playlists[index]
+
+    document.getElementById("modalEditarNome").textContent = pl.nome
+
+    const lista = document.getElementById("listaEditarMusicas")
+    lista.innerHTML = ""
+
+    if (pl.musicas.length === 0) {
+        lista.innerHTML = `<p style="color:#555; font-size:13px;">Nenhuma música nessa playlist.</p>`
+    } else {
+        pl.musicas.forEach((musica, mi) => {
+            const div = document.createElement("div")
+            div.className = "playlist-item"
+            div.style.justifyContent = "space-between"
+            div.innerHTML = `
+                <span style="font-size:14px; color:#fff;">${musica.titulo}</span>
+                <span style="font-size:12px; color:#aaa;">${musica.artista}</span>
+                <img src="icons/deleteMusica.svg" title="Remover" style="width:18px; height:18px; cursor:pointer; opacity:0.6; margin-left:auto;"
+                    onmouseover="this.style.opacity='1'"
+                    onmouseout="this.style.opacity='0.6'"
+                    onclick="removerDaPlaylist(${index}, ${mi})">
+            `
+            lista.appendChild(div)
+        })
+    }
+
+    document.getElementById("modalEditar").style.display = "flex"
+}
+
+function removerDaPlaylist(playlistIndex, musicaIndex) {
+    const playlists = getPlaylists()
+    playlists[playlistIndex].musicas.splice(musicaIndex, 1)
+    savePlaylists(playlists)
+    abrirModalEditar(playlistIndex)
+    renderAbaPlaylists()
+}
+
+document.getElementById("modalEditar").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("modalEditar")) {
+        document.getElementById("modalEditar").style.display = "none"
+    }
+})
+
+function abrirPlaylist(index) {
+    const playlists = getPlaylists()
+    const pl = playlists[index]
+    fila = pl.musicas
+    indiceFila = 0
+
+    trocarAba("musicas")
+    listM.innerHTML = ""
+
+    fila.forEach((musica, index) => {
+        const div = document.createElement("div")
+        div.className = "musica"
+        div.dataset.titulo = musica.titulo
+
+        const numero = document.createElement("div")
+        numero.className = "coluna-musica numero-musica"
+        numero.textContent = String(index + 1).padStart(2, "0")
+
+        const titulo = document.createElement("div")
+        titulo.className = "coluna-musica titulo-musica"
+        const tituloTexto = document.createElement("span")
+        tituloTexto.textContent = musica.titulo
+        titulo.appendChild(tituloTexto)
+
+        const album = document.createElement("div")
+        album.className = "coluna-musica album-musica"
+        album.textContent = musica.album || "—"
+
+        const tempo = document.createElement("div")
+        tempo.className = "coluna-musica tempo-musica"
+        tempo.textContent = "0:00"
+
+        const acaoLetra = document.createElement("div")
+        acaoLetra.className = "coluna-musica acao-letra"
+        const btnLetra = document.createElement("span")
+        btnLetra.className = "btn-letra"
+        btnLetra.textContent = "Letra"
+        btnLetra.onclick = (e) => {
+            e.stopPropagation()
+            const nomeArquivo = musica.src.split("/").pop().replace(".mp3", "")
+            carregarLetra(nomeArquivo)
+            trocarAba("letras")
+        }
+        acaoLetra.appendChild(btnLetra)
+
+        const audioTemporario = new Audio(musica.src)
+        audioTemporario.preload = "metadata"
+        audioTemporario.addEventListener("loadedmetadata", () => {
+            tempo.textContent = formatarDuracao(audioTemporario.duration)
+        }, { once: true })
+
+        div.append(numero, titulo, album, tempo, acaoLetra)
+        listM.appendChild(div)
+    })
+}

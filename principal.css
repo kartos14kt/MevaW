@@ -176,6 +176,24 @@ body {
     background: rgba(57,242,248,0.1);
 }
 
+.playlist-aba-item {
+    display: grid;
+    grid-template-columns: 50px 1.5fr 1fr 70px;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-radius: 5px;
+}
+
+.playlist-aba-item:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
 .playlist-item.adicionada span {
     color: rgb(57,242,248);
 }
