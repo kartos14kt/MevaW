@@ -7,6 +7,194 @@ body {
 
 }
 
+/* modal de login */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-box {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 340px;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 10px 16px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 25px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    font-family: Arial, sans-serif;
+    transition: border-color 0.3s;
+}
+
+.modal-input:focus {
+    border-color: rgb(57, 242, 248);
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 10px;
+    background: rgb(57, 242, 248);
+    color: black;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.modal-btn:hover {
+    opacity: 0.85;
+}
+
+
+/* modal de playlist */
+.modal-musica-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.modal-capa-mini {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #1a1a1a;
+    border: 0.5px solid #333;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #555;
+}
+
+.modal-label {
+    font-size: 12px;
+    color: #555;
+    margin: 0;
+}
+
+.modal-titulo-musica {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.modal-criar {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.modal-btn-criar {
+    padding: 0 14px;
+    height: 36px;
+    background: rgb(57,242,248);
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.modal-btn-criar:hover {
+    opacity: 0.85;
+}
+
+.modal-divisor {
+    width: 100%;
+    height: 0.5px;
+    background: #222;
+}
+
+.modal-secao {
+    font-size: 11px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+}
+
+.modal-cancelar {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px;
+    width: 100%;
+}
+
+.modal-cancelar:hover {
+    color: #fff;
+}
+
+.playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 4px;
+}
+
+.playlist-item:hover {
+    background: #1a1a1a;
+}
+
+.playlist-item.adicionada {
+    background: rgba(57,242,248,0.1);
+}
+
+.playlist-item.adicionada span {
+    color: rgb(57,242,248);
+}
+
+.playlist-item-nome {
+    font-size: 14px;
+    color: #fff;
+    flex: 1;
+}
+
+.playlist-item-count {
+    font-size: 11px;
+    color: #555;
+}
+
+
+
+
+
 /* Evita arrastar imagens e seleção de texto nelas */
 img {
     -webkit-user-drag: none;

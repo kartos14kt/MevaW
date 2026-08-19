@@ -200,7 +200,7 @@ function tocarMusica(musica) {
     setTimeout(() => audio.play(), 500)
 }
 
-const API_KEY = "AIzaSyDmtEjUKD45p6iWZ7ga9X9veOSI7EZ__wQ"
+const API_KEY = "AIzaSyC37cLfumTTSwed1lJJQKXZ3ifugxaPzj0"
 const PASTA_LETRAS = "16dJYO5S_KVdnh-QEnwZKwb1XdBZLIyP3"
 
 function carregarLetra(nomeArquivo) {
@@ -410,3 +410,110 @@ function tocarDaBusca(titulo, artistaChave) {
     document.getElementById("dropdownResultados").style.display = "none"
     document.getElementById("campoBusca").value = ""
 }
+
+
+let apelidoAtual = ""
+
+function verificarLogin() {
+    const apelido = localStorage.getItem("mevaw_apelido")
+    if (apelido) {
+        apelidoAtual = apelido
+        document.getElementById("modalLogin").style.display = "none"
+    }
+}
+
+function entrar() {
+    const input = document.getElementById("inputApelido").value.trim()
+    if (!input) return
+
+    apelidoAtual = input
+    localStorage.setItem("mevaw_apelido", input)
+    document.getElementById("modalLogin").style.display = "none"
+}
+
+// chama quando o site carrega
+verificarLogin()
+document.getElementById("inputApelido").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") entrar()
+})
+
+// abre o modal ao clicar no btnPlaylist
+document.getElementById("btnPlaylist").addEventListener("click", () => {
+    if (!fila[indiceFila]) return
+    document.getElementById("modalTituloMusica").textContent = fila[indiceFila].titulo
+    atualizarListaPlaylists()
+    document.getElementById("modalPlaylist").style.display = "flex"
+})
+
+function fecharModalPlaylist() {
+    document.getElementById("modalPlaylist").style.display = "none"
+    document.getElementById("inputNovaPlaylist").value = ""
+}
+
+function getPlaylists() {
+    return JSON.parse(localStorage.getItem(`playlists_${apelidoAtual}`) || "[]")
+}
+
+function savePlaylists(playlists) {
+    localStorage.setItem(`playlists_${apelidoAtual}`, JSON.stringify(playlists))
+}
+
+function criarPlaylist() {
+    const input = document.getElementById("inputNovaPlaylist")
+    const nome = input.value.trim()
+    if (!nome) return
+
+    const playlists = getPlaylists()
+    playlists.push({ nome, musicas: [] })
+    savePlaylists(playlists)
+
+    input.value = ""
+    input.placeholder = "Playlist criada!"
+    setTimeout(() => input.placeholder = "Nova playlist...", 2000)
+
+    atualizarListaPlaylists()
+}
+
+function atualizarListaPlaylists() {
+    const container = document.getElementById("listaPlaylists")
+    const playlists = getPlaylists()
+    const musicaAtual = fila[indiceFila]
+
+    container.innerHTML = `<p class="modal-secao">Suas playlists</p>`
+
+    if (playlists.length === 0) {
+        container.innerHTML += `<p style="color:#555; font-size:13px; padding: 8px 0;">Nenhuma playlist ainda.</p>`
+        return
+    }
+
+    playlists.forEach((pl, i) => {
+        const jaAdicionada = musicaAtual && pl.musicas.some(m => m.src === musicaAtual.src)
+        const div = document.createElement("div")
+        div.className = `playlist-item${jaAdicionada ? " adicionada" : ""}`
+        div.innerHTML = `
+            <i class="ti ti-playlist" style="font-size:16px; color:${jaAdicionada ? "rgb(57,242,248)" : "#aaa"};" aria-hidden="true"></i>
+            <span class="playlist-item-nome" style="color:${jaAdicionada ? "rgb(57,242,248)" : "#fff"}">${pl.nome}</span>
+            <span class="playlist-item-count">${pl.musicas.length} músicas</span>
+            ${jaAdicionada ? '<i class="ti ti-check" style="font-size:16px; color:rgb(57,242,248);" aria-hidden="true"></i>' : ""}
+        `
+        if (!jaAdicionada) {
+            div.onclick = () => adicionarNaPlaylist(i)
+        }
+        container.appendChild(div)
+    })
+}
+
+function adicionarNaPlaylist(index) {
+    const playlists = getPlaylists()
+    const musica = fila[indiceFila]
+    if (!musica) return
+
+    playlists[index].musicas.push(musica)
+    savePlaylists(playlists)
+    atualizarListaPlaylists()
+}
+document.getElementById("modalPlaylist").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("modalPlaylist")) {
+        fecharModalPlaylist()
+    }
+})
