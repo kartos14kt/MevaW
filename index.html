@@ -23,12 +23,28 @@
         <span class="logo-nome">Meva<span class="logo-wave">W</span></span>
     </div>
 
-    <div class="barra-pesquisa">
-        <span class="pesquisa-icone">🔍</span>
-        <input type="text" class="pesquisa-input" placeholder="Pesquisar...">
+
+
+    <div class="pesquisa-container">
+        <div class="barra-pesquisa">
+            <a href="#" class="botaoPesquisa">
+                <img src="icons/lupagarai.svg" class="lupa" alt="Pesquisar" height="20" width="20">
+            </a>
+            <input type="text" class="pesquisa-input" id="campoBusca" placeholder="Pesquisar..." oninput="buscar(this.value)">
+        </div>
+        <div class="dropdown-resultados" id="dropdownResultados" style="display:none;">
+        </div>
     </div>
 
-    <div></div>
+
+    <div class="contatos">
+        <a href="mailto:muriloczr1515@gmail.com">
+            <img src="icons/mandaEmail.svg" id="contato-icon" alt="Email">
+        </a>
+        <a href="https://github.com/kartos14kt">
+            <img src="icons/github.svg" id="contato-icon" alt="GitHub">
+        </a>
+    </div>
 </div>
 
 
@@ -116,28 +132,35 @@
         <div class="abas-nav">
             <button class="aba-btn ativo" id="aba-playlists" onclick="trocarAba('playlists')">Playlists</button>
             <button class="aba-btn" id="aba-musicas" onclick="trocarAba('musicas')">Músicas</button>
+            <button class="aba-btn" id="aba-letras" onclick="trocarAba('letras')">Letras</button>
         </div>
 
         <!-- Conteúdo principal: Lista de músicas do artista selecionado -->
         <div class="conteudo-principal">
 
             <!-- painel músicas -->
-             <h1 align="center">playlist atual</h1>
             <div id="painel-musicas" class="painel-aba">
+                <div class="barraguia">
+                    <div class="infoMusicas" id="numero"><b>N°</b></div>
+                    <div class="infoMusicas" id="titulo"><b>Titulo</b></div>
+                    <div class="infoMusicas" id="album"><b></b>Album</b></div>
+                    <div class="infoMusicas" id="time"><b>Tempo</b></div>
+                </div>
                 <div id="listM" class="listM"></div>
             </div>
-
+            
             <!-- painel playlists -->
             <div id="painel-playlists" class="painel-aba" style="display:none;">
                 <p style="color: #aaa; padding: 20px;">Nenhuma playlist criada ainda.</p>
             </div>
 
+            <div id="painel-letras" class="painel-aba" style="display:none;">
+                <div id="letra" class="area-letra">Selecione uma música para ver a letra.</div>
+            </div>
+
         </div>
     </div>
 </div>
-
-<!-- Elemento oculto para carregarLetra() -->
-<div id="letra" style="display:none;"></div>
 
 <script src="player.js"></script>
 </body>
