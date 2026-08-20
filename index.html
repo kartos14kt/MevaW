@@ -209,6 +209,33 @@
     </div>
 </div>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRyP_QuAGbOJ76Thr0W75tEawyKSVWeW4",
+    authDomain: "mevaw-e5ead.firebaseapp.com",
+    projectId: "mevaw-e5ead",
+    storageBucket: "mevaw-e5ead.firebasestorage.app",
+    messagingSenderId: "1033686849801",
+    appId: "1:1033686849801:web:8f8fc840f39291e7b75bd8"
+  };
+
+    const app = initializeApp(firebaseConfig)
+    const db = getFirestore(app)
+
+    window.fbGetPlaylists = async (apelido) => {
+        const ref = doc(db, "usuarios", apelido)
+        const snap = await getDoc(ref)
+        return snap.exists() ? snap.data().playlists || [] : []
+    }
+
+    window.fbSavePlaylists = async (apelido, playlists) => {
+        const ref = doc(db, "usuarios", apelido)
+        await setDoc(ref, { playlists }, { merge: true })
+    }
+</script>
 <script src="player.js"></script>
 </body>
 </html>

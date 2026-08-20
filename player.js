@@ -465,22 +465,22 @@ function fecharModalPlaylist() {
     document.getElementById("inputNovaPlaylist").value = ""
 }
 
-function getPlaylists() {
-    return JSON.parse(localStorage.getItem(`playlists_${apelidoAtual}`) || "[]")
+async function getPlaylists() {
+    return await window.fbGetPlaylists(apelidoAtual)
 }
 
-function savePlaylists(playlists) {
-    localStorage.setItem(`playlists_${apelidoAtual}`, JSON.stringify(playlists))
+async function savePlaylists(playlists) {
+    await window.fbSavePlaylists(apelidoAtual, playlists)
 }
 
-function criarPlaylist() {
+async function criarPlaylist() {
     const input = document.getElementById("inputNovaPlaylist")
     const nome = input.value.trim()
     if (!nome) return
 
-    const playlists = getPlaylists()
+    const playlists = await getPlaylists()
     playlists.push({ nome, musicas: [] })
-    savePlaylists(playlists)
+    await savePlaylists(playlists)
 
     input.value = ""
     input.placeholder = "Playlist criada!"
@@ -490,9 +490,9 @@ function criarPlaylist() {
     renderAbaPlaylists()
 }
 
-function atualizarListaPlaylists() {
+async function atualizarListaPlaylists() {
     const container = document.getElementById("listaPlaylists")
-    const playlists = getPlaylists()
+    const playlists = await getPlaylists()
     const musicaAtual = fila[indiceFila]
 
     container.innerHTML = `<p class="modal-secao">Suas playlists</p>`
@@ -519,13 +519,13 @@ function atualizarListaPlaylists() {
     })
 }
 
-function adicionarNaPlaylist(index) {
-    const playlists = getPlaylists()
+async function adicionarNaPlaylist(index) {
+    const playlists = await getPlaylists()
     const musica = fila[indiceFila]
     if (!musica) return
 
     playlists[index].musicas.push(musica)
-    savePlaylists(playlists)
+    await savePlaylists(playlists)
     atualizarListaPlaylists()
     renderAbaPlaylists()
 }
@@ -535,9 +535,9 @@ document.getElementById("modalPlaylist").addEventListener("click", (e) => {
     }
 })
 
-function renderAbaPlaylists() {
+async function renderAbaPlaylists() {
     const painel = document.getElementById("painel-playlists")
-    const playlists = getPlaylists()
+    const playlists = await getPlaylists()
 
     painel.innerHTML = ""
 
@@ -581,8 +581,8 @@ function renderAbaPlaylists() {
     })
 }
 
-function abrirModalEditar(index) {
-    const playlists = getPlaylists()
+async function abrirModalEditar(index) {
+    const playlists = await getPlaylists()
     const pl = playlists[index]
 
     document.getElementById("modalEditarNome").textContent = pl.nome
@@ -612,10 +612,10 @@ function abrirModalEditar(index) {
     document.getElementById("modalEditar").style.display = "flex"
 }
 
-function removerDaPlaylist(playlistIndex, musicaIndex) {
-    const playlists = getPlaylists()
+async function removerDaPlaylist(playlistIndex, musicaIndex) {
+    const playlists = await getPlaylists()
     playlists[playlistIndex].musicas.splice(musicaIndex, 1)
-    savePlaylists(playlists)
+    await savePlaylists(playlists)
     abrirModalEditar(playlistIndex)
     renderAbaPlaylists()
 }
@@ -626,8 +626,8 @@ document.getElementById("modalEditar").addEventListener("click", (e) => {
     }
 })
 
-function abrirPlaylist(index) {
-    const playlists = getPlaylists()
+async function abrirPlaylist(index) {
+    const playlists = await getPlaylists()
     const pl = playlists[index]
     fila = pl.musicas
     indiceFila = 0
