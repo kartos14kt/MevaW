@@ -213,7 +213,13 @@ function carregarLetra(nomeArquivo) {
     const letra = document.getElementById("letra")
     
     fetch(`https://www.googleapis.com/drive/v3/files?q=${query}&fields=files(id,mimeType)&key=${API_KEY}`)
-        .then(r => r.json())
+        .then(async r => {
+            const dados = await r.json()
+            if (!r.ok) {
+                throw new Error(`Google Drive ${r.status}: ${dados.error?.message || "erro desconhecido"}`)
+            }
+            return dados
+        })
         .then(dados => {
             if (!dados.files || dados.files.length === 0) {
                 throw new Error("Letra não encontrada")
@@ -231,7 +237,8 @@ function carregarLetra(nomeArquivo) {
         .then(texto => {
             letra.textContent = texto
         })
-        .catch(() => {
+        .catch(erro => {
+            console.error("Erro ao carregar a letra:", erro)
             letra.textContent = "Letra não disponível."
         })
 }
@@ -564,7 +571,7 @@ async function renderAbaPlaylists() {
 
         const editar = document.createElement("div")
         editar.className = "coluna-musica acao-letra"
-        editar.style.position = "relative"
+        editar.style.position = "relative"  
 
         const btnEditar = document.createElement("img")
         btnEditar.src = "icons/edit_playlist.svg"
