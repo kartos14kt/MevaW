@@ -564,6 +564,8 @@ async function renderAbaPlaylists() {
 
         const editar = document.createElement("div")
         editar.className = "coluna-musica acao-letra"
+        editar.style.position = "relative"
+
         const btnEditar = document.createElement("img")
         btnEditar.src = "icons/edit_playlist.svg"
         btnEditar.style.cssText = "width:20px; height:20px; cursor:pointer; opacity:0.6; transition: opacity 0.2s;"
@@ -571,14 +573,40 @@ async function renderAbaPlaylists() {
         btnEditar.onmouseout = () => btnEditar.style.opacity = "0.6"
         btnEditar.onclick = (e) => {
             e.stopPropagation()
-            abrirModalEditar(i)
+            console.log("delloword")
+            fecharTodosDropdowns()
+            const dropdown = editar.querySelector(".dropdown-playlist")
+            dropdown.style.display = "block"
         }
+
+        const dropdown = document.createElement("div")
+        dropdown.className = "dropdown-playlist"
+        dropdown.style.display = "none"
+        dropdown.innerHTML = `
+            <div class="dropdown-item" onclick="abrirModalEditar(${i})">Remover música</div>
+            <div class="dropdown-item vermelho" onclick="excluirPlaylist(${i})">Excluir playlist</div>
+        `
+        dropdown.addEventListener("click", (e) => e.stopPropagation())
+
         editar.appendChild(btnEditar)
+        editar.appendChild(dropdown)
 
         div.append(numero, nome, count, editar)
         div.onclick = () => abrirPlaylist(i)
         painel.appendChild(div)
     })
+}
+
+function fecharTodosDropdowns() {
+    document.querySelectorAll(".dropdown-playlist").forEach(d => d.style.display = "none")
+}
+
+async function excluirPlaylist(index) {
+    fecharTodosDropdowns()
+    const playlists = await getPlaylists()
+    playlists.splice(index, 1)
+    await savePlaylists(playlists)
+    renderAbaPlaylists()
 }
 
 async function abrirModalEditar(index) {
@@ -625,6 +653,8 @@ document.getElementById("modalEditar").addEventListener("click", (e) => {
         document.getElementById("modalEditar").style.display = "none"
     }
 })
+
+document.addEventListener("click", () => fecharTodosDropdowns())
 
 async function abrirPlaylist(index) {
     const playlists = await getPlaylists()
