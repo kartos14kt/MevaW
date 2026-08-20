@@ -321,14 +321,9 @@ audio.addEventListener("ended", () => {
         indiceFila = (indiceFila + 1) % fila.length
         tocarMusica(fila[indiceFila])
     } else {
-        // sem loop, avança se não for a última
-        if (indiceFila < fila.length - 1) {
-            indiceFila++
-            tocarMusica(fila[indiceFila])
-        } else {
-            icone.src = "icons/tocando.png"
-            btnPlay.classList.remove("ativo")
-        }
+        // sem loop, mantém a música parada
+        icone.src = "icons/tocando.png"
+        btnPlay.classList.remove("ativo")
     }
 })
 
