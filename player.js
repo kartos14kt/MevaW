@@ -203,6 +203,24 @@ function tocarMusica(musica) {
     })
 
     setTimeout(() => audio.play(), 500)
+
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: musica.titulo,
+            artist: musica.artista,
+            artwork: [{src: musica.capa, sizes: '512x512', type: 'image/png'}]
+        })
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            if (fila.length === 0) return
+            indiceFila = (indiceFila - 1 + fila.length) % fila.length
+            tocarMusica(fila[indiceFila])
+        })
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            if (fila.length === 0) return
+            indiceFila = (indiceFila + 1) % fila.length
+            tocarMusica(fila[indiceFila])
+        }
+    }
 }
 
 const API_KEY = "AIzaSyC37cLfumTTSwed1lJJQKXZ3ifugxaPzj0"
