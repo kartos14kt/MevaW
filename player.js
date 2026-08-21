@@ -219,7 +219,7 @@ function tocarMusica(musica) {
             if (fila.length === 0) return
             indiceFila = (indiceFila + 1) % fila.length
             tocarMusica(fila[indiceFila])
-        }
+        })
     }
 }
 
