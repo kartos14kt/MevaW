@@ -308,7 +308,6 @@ img {
     padding: 10px;
     background-color: #22222250;
     border: 1px solid #383838;
-    
 }
 
 /* estilo padrão das divs */
@@ -782,6 +781,7 @@ div {
 }
 
 .pesquisa-container {
+
     position: relative;
 }
 
@@ -791,7 +791,7 @@ div {
 }
 
 .pesquisa-container:hover .pesquisa-input {
-    width: 200px;
+    width: 100%;
 }
 
 .dropdown-resultados {
@@ -811,7 +811,7 @@ div {
 }
 
 .barra-pesquisa:hover > .pesquisa-input {
-    width: 200px;
+    width: 540px;
     
 }
 
@@ -1007,4 +1007,92 @@ body {
 .acao-letra {
     justify-self: end;
     overflow: visible;
+}
+
+
+
+
+@media (max-width: 450px) {
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+        gap: 20px;
+    }
+
+    /* Faz artistas e extra entrarem na ordem da .layout */
+    .coluna-esquerda {
+        display: contents;
+    }
+
+    .artistas {
+        order: 1;
+        width: 100%;
+        height: 150px;
+    }
+
+    .sobre {
+        order: 2;
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+        height: auto;
+    }
+
+    .extra {
+        order: 3;
+        width: 100%;
+        height: 150px;
+    }
+
+    /* topo simplificado */
+    .topo {
+        grid-template-columns: 1fr auto;
+        padding: 8px 12px;
+    }
+
+    .contatos {
+        display: none;
+    }
+
+    /* player menor */
+    .capa {
+        width: 120px;
+        height: 120px;
+    }
+
+    .musica {
+        grid-template-columns: 30px 1fr 60px;
+    }
+
+    .album-musica {
+        display: none;
+    }
+    .logo-img{
+        width: 25px;
+        height: 25px;
+    }
+    .listM{
+        max-height: 200px ;
+    }
+    .topo{
+        box-shadow: 0 2px 20px rgb(57,242,248);
+    }
+    /* Barra guia: apenas número, título e tempo */
+    .barraguia {
+        grid-template-columns: 30px 1fr 60px;
+    }
+
+    /* Esconde a coluna Álbum */
+    .barraguia #album,
+    .album-musica {
+        display: none;
+    }
+
+    /* Lista de músicas: número, título e tempo */
+    .musica {
+        grid-template-columns: 30px 1fr 60px;
+    }
 }
